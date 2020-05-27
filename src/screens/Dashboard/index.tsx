@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useState, FormEvent } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 
