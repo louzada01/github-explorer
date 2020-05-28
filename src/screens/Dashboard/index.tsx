@@ -46,14 +46,20 @@ const Dashboard: React.FC = () => {
       setInputError('Digite um valor para buscar');
       return;
     }
+    const findLocalRepository = repositories.find(
+      (repo) => repo.full_name === newRepo,
+    );
+    if (findLocalRepository) {
+      setInputError('Esse repo já foi adicionado');
+      return;
+    }
     try {
       const { data: response } = await gitHubApi.get<Repository>(
         `/repos/${newRepo}`,
       );
-
-      setRepositories([...repositories, response]);
       setNewRepo('');
       setInputError('');
+      setRepositories([...repositories, response]);
     } catch (error) {
       setInputError('Verifique os dados informados');
     }
@@ -67,7 +73,7 @@ const Dashboard: React.FC = () => {
         <input
           value={newRepo}
           onChange={(e) => setNewRepo(e.target.value)}
-          placeholder="Digite aqui para pesquisar"
+          placeholder="Qual repo deseja pesquisar? Ex: facebook/react"
         />
         <button type="submit">Pesquisar</button>
       </Form>
