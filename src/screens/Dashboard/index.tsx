@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useEffect, useState, FormEvent } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 import { gitHubApi } from '../../services/api';
 
@@ -73,14 +74,14 @@ const Dashboard: React.FC = () => {
       {inputError && <Error>{inputError}</Error>}
       <Repositories>
         {repositories.map((repo) => (
-          <a key={repo.full_name} href="/">
+          <Link key={repo.full_name} to={`/repository/${repo.full_name}`}>
             <img src={repo.owner.avatar_url} alt={repo.owner.login} />
             <div>
               <strong>{repo.full_name}</strong>
               <p>{repo.description}</p>
             </div>
             <FiChevronRight size={20} />
-          </a>
+          </Link>
         ))}
       </Repositories>
     </>
