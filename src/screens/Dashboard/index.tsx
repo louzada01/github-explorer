@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useState, FormEvent } from 'react';
+import React, { useEffect, useState, FormEvent } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 
 import { gitHubApi } from '../../services/api';
@@ -17,9 +17,25 @@ interface Repository {
 }
 
 const Dashboard: React.FC = () => {
-  const [repositories, setRepositories] = useState<Repository[]>([]);
+  const [repositories, setRepositories] = useState<Repository[]>(() => {
+    const localStorageRepositories = localStorage.getItem(
+      '@GITHUB_EXPLORER:Repositories',
+    );
+
+    if (localStorageRepositories) {
+      return JSON.parse(localStorageRepositories);
+    }
+    return [];
+  });
   const [newRepo, setNewRepo] = useState('');
   const [inputError, setInputError] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem(
+      '@GITHUB_EXPLORER:Repositories',
+      JSON.stringify(repositories),
+    );
+  }, [repositories]);
 
   const handleAddRepository = async (
     event: FormEvent<HTMLFormElement>,
